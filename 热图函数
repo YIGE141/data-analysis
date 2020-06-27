@@ -1,0 +1,38 @@
+def asymmatplot(plotmat, names=None, cmap="Greys", cmap_range=None, ax=None, **kwargs):
+    '''
+    Plot an asymmetric matrix with colormap and statistic values. A modification of the
+    symmatplot() function in Seaborn to show the upper-half of the matrix.
+    
+    See https://github.com/mwaskom/seaborn/blob/master/seaborn/linearmodels.py for the original.
+    '''
+    if ax is None:
+        ax = plt.gca()
+
+    nvars = len(plotmat)
+
+    if cmap_range is None:
+        vmax = np.nanmax(plotmat) * 1.15
+        vmin = np.nanmin(plotmat) * 1.15
+    elif len(cmap_range) == 2:
+        vmin, vmax = cmap_range
+    else:
+        raise ValueError("cmap_range argument not understood")
+
+    mat_img = ax.matshow(plotmat, cmap=cmap, vmin=vmin, vmax=vmax, **kwargs)
+
+    plt.colorbar(mat_img, shrink=.75)
+ 
+    ax.xaxis.set_ticks_position("bottom")
+    ax.set_xticklabels(names, rotation=90)
+    ax.set_yticklabels(names)
+
+    minor_ticks = np.linspace(-.5, nvars - 1.5, nvars)
+    ax.set_xticks(minor_ticks, True)
+    ax.set_yticks(minor_ticks, True)
+    major_ticks = np.linspace(0, nvars - 1, nvars)
+    ax.set_xticks(major_ticks)
+    ax.set_yticks(major_ticks)
+    ax.grid(False, which="major")
+    ax.grid(True, which="minor", linestyle="-")
+
+    return ax
