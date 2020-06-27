@@ -36,3 +36,6 @@ def asymmatplot(plotmat, names=None, cmap="Greys", cmap_range=None, ax=None, **k
     ax.grid(True, which="minor", linestyle="-")
 
     return ax
+    
+ fig, ax = plt.subplots(figsize=(15,15))
+asymmatplot(你的数据集, names=你的数据集.columns, ax=ax, cmap='OrRd')
